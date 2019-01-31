@@ -13,9 +13,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
+import android.util.Log;
 
 import com.example.ezequiel.camera2.R;
-import com.example.ezequiel.camera2.others.GraphicOverlay;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.Landmark;
 
@@ -102,6 +103,18 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
             return;
         }
 
+        PointF printData1 = face.getPosition();
+        float print2 = face.getWidth();
+        float print3 = face.getHeight();
+        Log.i("TAG", "==========printData1:" + printData1 + ", print2 = " + print2 + ", print3 = " + print3);
+        Log.i("TAG", "==========Camera2 printData2:" + mOverlay.mWidthScaleFactor +
+                ", print2 = " + mOverlay.mHeightScaleFactor +
+                ", print3 = " + mOverlay.mFacing +
+                ", print4 = " + mOverlay.mPreviewWidth +
+                ", print5 = " + mOverlay.mPreviewHeight);
+
+
+
         facePosition = new PointF(translateX(face.getPosition().x), translateY(face.getPosition().y));
         faceWidth = face.getWidth() * 4;
         faceHeight = face.getHeight() * 4;
@@ -154,10 +167,26 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         }
 
         Paint mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setDither(true);
         mPaint.setColor(Color.WHITE);
-        mPaint.setStrokeWidth(4);
-        if(faceCenter != null)
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        if(faceCenter != null) {
             canvas.drawBitmap(marker, faceCenter.x, faceCenter.y, null);
+            // if (mouthBase != null) {
+            //     canvas.drawRect(faceCenter.x - faceWidth / 2,
+            //             faceCenter.y - faceHeight / 2,
+            //             faceCenter.x + faceWidth / 2,
+            //             mouthBase.y, mPaint);
+            // } else {
+            RectF rectF = new RectF(faceCenter.x - faceWidth / 2,
+                    faceCenter.y - faceHeight / 2,
+                    faceCenter.x + faceWidth / 2,
+                    faceCenter.y + faceHeight / 2);
+                canvas.drawRect(rectF, mPaint);
+            // }
+        }
         if(noseBasePos != null)
             canvas.drawBitmap(marker, noseBasePos.x, noseBasePos.y, null);
         if(leftEyePos != null)

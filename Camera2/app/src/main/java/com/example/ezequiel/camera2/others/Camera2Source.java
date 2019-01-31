@@ -94,7 +94,7 @@ public class Camera2Source {
     public static final int CAMERA_AF_OFF = CaptureRequest.CONTROL_AF_MODE_OFF;
     public static final int CAMERA_AF_CONTINUOUS_PICTURE = CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE;
     public static final int CAMERA_AF_CONTINUOUS_VIDEO = CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO;
-    private int mFocusMode = CAMERA_AF_AUTO;
+    private int mFocusMode = CAMERA_AF_CONTINUOUS_PICTURE;
 
     private static final String TAG = "Camera2Source";
     private static final double ratioTolerance = 0.1;

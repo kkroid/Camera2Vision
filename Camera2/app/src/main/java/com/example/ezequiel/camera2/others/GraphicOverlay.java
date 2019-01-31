@@ -34,11 +34,11 @@ import java.util.Set;
  */
 public class GraphicOverlay extends View {
     private final Object mLock = new Object();
-    private int mPreviewWidth;
-    private float mWidthScaleFactor = 1.0f;
-    private int mPreviewHeight;
-    private float mHeightScaleFactor = 1.0f;
-    private int mFacing = CameraSource.CAMERA_FACING_BACK;
+    public int mPreviewWidth;
+    public int mPreviewHeight;
+    public float mWidthScaleFactor = 1.0f;
+    public float mHeightScaleFactor = 1.0f;
+    public int mFacing = CameraSource.CAMERA_FACING_BACK;
     private Set<Graphic> mGraphics = new HashSet<>();
 
     /**
@@ -47,7 +47,7 @@ public class GraphicOverlay extends View {
      * graphics element.  Add instances to the overlay using {@link GraphicOverlay#add(Graphic)}.
      */
     public static abstract class Graphic {
-        private GraphicOverlay mOverlay;
+        public GraphicOverlay mOverlay;
 
         public Graphic(GraphicOverlay overlay) {
             mOverlay = overlay;
@@ -167,8 +167,8 @@ public class GraphicOverlay extends View {
 
         synchronized (mLock) {
             if ((mPreviewWidth != 0) && (mPreviewHeight != 0)) {
-                mWidthScaleFactor = (float) canvas.getWidth() / (float) mPreviewWidth;
-                mHeightScaleFactor = (float) canvas.getHeight() / (float) mPreviewHeight;
+                mWidthScaleFactor = (float) getWidth() / (float) mPreviewWidth;
+                mHeightScaleFactor = (float) getHeight() / (float) mPreviewHeight;
             }
 
             for (Graphic graphic : mGraphics) {

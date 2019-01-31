@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private Button videoButton;
 
     // DEFAULT CAMERA BEING OPENED
-    private boolean usingFrontCamera = true;
+    private boolean usingFrontCamera = false;
 
     // MUST BE CAREFUL USING THIS VARIABLE.
     // ANY ATTEMPT TO START CAMERA2 ON API < 21 WILL CRASH.
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            mPreview.setOnTouchListener(CameraPreviewTouchListener);
+            // mPreview.setOnTouchListener(CameraPreviewTouchListener);
         }
     }
 
@@ -328,7 +328,11 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 useCamera2 = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-                createCameraSourceFront();
+                if (usingFrontCamera) {
+                    createCameraSourceFront();
+                } else {
+                    createCameraSourceBack();
+                }
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
             }
@@ -354,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(useCamera2) {
             mCamera2Source = new Camera2Source.Builder(context, previewFaceDetector)
-                    .setFocusMode(Camera2Source.CAMERA_AF_AUTO)
+                    .setFocusMode(Camera2Source.CAMERA_AF_CONTINUOUS_PICTURE)
                     .setFlashMode(Camera2Source.CAMERA_FLASH_AUTO)
                     .setFacing(Camera2Source.CAMERA_FACING_FRONT)
                     .build();
@@ -394,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(useCamera2) {
             mCamera2Source = new Camera2Source.Builder(context, previewFaceDetector)
-                    .setFocusMode(Camera2Source.CAMERA_AF_AUTO)
+                    .setFocusMode(Camera2Source.CAMERA_AF_CONTINUOUS_PICTURE)
                     .setFlashMode(Camera2Source.CAMERA_FLASH_AUTO)
                     .setFacing(Camera2Source.CAMERA_FACING_BACK)
                     .build();
